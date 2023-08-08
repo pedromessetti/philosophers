@@ -2,11 +2,11 @@
 
 ## Index
 - [Index](#index)
-- [Description :dashboard:](#description-dashboard)
+- [Description :clipboard:](#description-clipboard)
 - [Operation :gear:](#operation-gear)
 - [Learnings :brain:](#learnings-brain)
 
-## Description :dashboard:
+## Description :clipboard:
 The dinning philosophers problem
 
 ## Operation :gear:

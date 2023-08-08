@@ -6,11 +6,18 @@
 /*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 19:00:10 by pedro             #+#    #+#             */
-/*   Updated: 2023/08/03 16:11:45 by pedro            ###   ########.fr       */
+/*   Updated: 2023/08/07 06:09:06 by pedro            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	get_time(void)
+{
+	struct timeval	tv;
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * (int)1000) + (tv.tv_usec / 1000));
+}
 
 int	ft_isnum(char c)
 {

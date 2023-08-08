@@ -38,7 +38,7 @@ re: fclean all
 # Rebuild the project and remove object files
 run: re
 	$(MAKE) clean
-	./$(NAME) 5 200 200 200 10
+	./$(NAME) 5 200000 20 100
 
 # Show help message
 help:
