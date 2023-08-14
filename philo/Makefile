@@ -1,4 +1,4 @@
-.SILENT:
+#.SILENT:
 
 # Color variables
 RED = \033[1;31m
@@ -10,7 +10,7 @@ RESET = \033[0m
 NAME = philo
 
 # Compiler options
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Wextra -Werror -pthread -g #-fsanitize=thread
 
 # Source and object files
@@ -38,11 +38,15 @@ re: fclean all
 # Rebuild the project and remove object files
 run: re
 	$(MAKE) clean
-	./$(NAME) 5 400 200 200 5
+#	./$(NAME) 5 800 200 200
+#	./$(NAME) 5 800 200 200 7 | grep eating | wc -l # out -> 35
+#	./$(NAME) 4 410 200 200 # no one dies
+#	./$(NAME) 5 410 200 200 # one dies
+#	./$(NAME) 3 310 200 100 # one dies
 
 leak: re
 	$(MAKE) clean
-	valgrind --leak-check=full ./$(NAME) 5 800 200 200
+	valgrind --tool=helgrind ./$(NAME) 5 800 200 200 5
 
 # Show help message
 help:

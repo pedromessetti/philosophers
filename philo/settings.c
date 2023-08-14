@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   settings.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pmessett <pmessett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 20:45:37 by pedro             #+#    #+#             */
-/*   Updated: 2023/08/08 09:10:15 by pedro            ###   ########.fr       */
+/*   Updated: 2023/08/14 10:46:10 by pmessett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	set_forks_and_philos(t_data *data)
 	i = -1;
 	while (++i < data->number_of_philos)
 	{
+		ft_sem_init(&data->forks[i]);
 		data->philos[i].data = data;
 		data->philos[i].id = i + 1;
 		data->philos[i].time_to_die = data->time_to_die;
@@ -30,7 +31,6 @@ void	set_forks_and_philos(t_data *data)
 			data->philos[i].r_fork = &data->forks[data->number_of_philos - 1];
 		else
 			data->philos[i].r_fork = &data->forks[i - 1];
-		ft_sem_init(&data->forks[i]);
 	}
 }
 
