@@ -38,7 +38,11 @@ re: fclean all
 # Rebuild the project and remove object files
 run: re
 	$(MAKE) clean
-	./$(NAME) 5 200000 20 100
+	./$(NAME) 5 400 200 200 5
+
+leak: re
+	$(MAKE) clean
+	valgrind --leak-check=full ./$(NAME) 5 800 200 200
 
 # Show help message
 help:

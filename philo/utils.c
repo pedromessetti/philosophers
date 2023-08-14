@@ -6,11 +6,24 @@
 /*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 19:00:10 by pedro             #+#    #+#             */
-/*   Updated: 2023/08/07 06:09:06 by pedro            ###   ########.fr       */
+/*   Updated: 2023/08/08 10:12:19 by pedro            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	end_simulation(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	while (++i < data->number_of_philos)
+	{
+		ft_sem_destroy(&data->forks[i]);
+		pthread_mutex_destroy(&data->philos[i].state);
+	}
+	pthread_mutex_destroy(&data->lock);
+}
 
 int	get_time(void)
 {

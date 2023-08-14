@@ -6,7 +6,7 @@
 /*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 17:49:29 by pedro             #+#    #+#             */
-/*   Updated: 2023/08/08 06:51:28 by pedro            ###   ########.fr       */
+/*   Updated: 2023/08/09 05:59:32 by pedro            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct s_philo
 	int				status;
 	int				eating;
 	int				time_to_die;
-	pthread_mutex_t	lock;
+	pthread_mutex_t	state;
 	t_semaphore		*r_fork;
 	t_semaphore		*l_fork;
 	struct s_data	*data;
@@ -60,7 +60,6 @@ typedef struct s_data
 	int				number_of_meals;
 	t_semaphore		*forks;
 	pthread_mutex_t	lock;
-	pthread_mutex_t	write;
 }					t_data;
 
 /* --- Checker Functions --- */
@@ -77,18 +76,23 @@ int					get_time(void);
 /* --- Semaphore Functions --- */
 
 int					ft_sem_init(t_semaphore *sem);
-int					ft_sem_wait(t_semaphore *sem);
+int					ft_sem_wait(t_philo *philo);
 int					ft_sem_post(t_philo *philo);
 int					ft_sem_destroy(t_semaphore *sem);
 
 /* --- Init Functions --- */
 
-void				set_forks_and_philos(t_data *data);
 int					init(char **av, t_data *data);
+void				set_forks_and_philos(t_data *data);
 
 /* --- Philo Functions --- */
 
 void				start_eating(t_philo *philo);
 void				start_sleeping(t_philo *philo);
+
+/* --- Simulation Functions --- */
+
+void				start_simulation(t_data *data);
+void				end_simulation(t_data *data);
 
 #endif

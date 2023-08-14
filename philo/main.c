@@ -6,7 +6,7 @@
 /*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 17:49:24 by pedro             #+#    #+#             */
-/*   Updated: 2023/08/08 07:01:38 by pedro            ###   ########.fr       */
+/*   Updated: 2023/08/14 09:53:27 by pedro            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,46 +44,46 @@ void	*monitor(void *data_pointer)
 	t_philo	*philo;
 
 	philo = (t_philo *)data_pointer;
-	pthread_mutex_lock(&philo->data->write);
-	printf("data: %d", philo->data->dead);
-	pthread_mutex_unlock(&philo->data->write);
 	while (philo->data->dead == 0)
 	{
-		pthread_mutex_lock(&philo->lock);
-		if (philo->data->finished >= philo->data->number_of_philos)
+		pthread_mutex_lock(&philo->state);
+		if (philo->data->finished >= philo->data->number_of_philos) {
 			philo->data->dead = 1;
-		pthread_mutex_unlock(&philo->lock);
+		}
+		pthread_mutex_unlock(&philo->state);
 	}
 	return ((void *)0);
 }
 
-void	*supervisor(void *philo_pointer)
+void	*supervisor(void *thread_pointer)
 {
 	t_philo	*philo;
 
-	philo = (t_philo *)philo_pointer;
+	philo = (t_philo *)thread_pointer;
 	while (philo->data->dead == 0)
 	{
-		pthread_mutex_lock(&philo->lock);
-		if (get_time() >= philo->time_to_die && philo->eating == 0)
+		pthread_mutex_lock(&philo->state);
+		if (get_time() >= philo->time_to_die && philo->eating == 0){
 			printf("%dms philo %d died\n", get_time() - philo->data->init_time, philo->id);
-		if (philo->meals_count == philo->data->number_of_meals)
-		{
+			if (philo->data->dead == 0)
+				philo->data->dead = 1;
+		}
+		if (philo->meals_count == philo->data->number_of_meals) {
 			pthread_mutex_lock(&philo->data->lock);
 			philo->data->finished++;
-			philo->meals_count++;
 			pthread_mutex_unlock(&philo->data->lock);
 		}
-		pthread_mutex_unlock(&philo->lock);
+		pthread_mutex_unlock(&philo->state);
 	}
 	return ((void *)0);
 }
 
-void	*routine(void *philo_pointer)
+void	*routine(void *thread_pointer)
 {
 	t_philo	*philo;
 
-	philo = (t_philo *)philo_pointer;
+	philo = (t_philo *)thread_pointer;
+	philo->time_to_die = philo->data->time_to_die + get_time();
 	if (pthread_create(&philo->thread, NULL, &supervisor, (void *)philo))
 		return ((void *)1);
 	while (philo->data->dead == 0)
@@ -91,21 +91,28 @@ void	*routine(void *philo_pointer)
 		ft_sem_post(philo);
 		printf("%dms philo %d is thinking\n", get_time() - philo->data->init_time, philo->id);
 	}
+	if (pthread_join(philo->thread, NULL))
+		return ((void *)1);
 	return ((void *)0);
 }
 
-void	start_dinner(t_data *data)
+void	start_simulation(t_data *data)
 {
 	int	i;
+	pthread_t	monitor_thread;
 
 	i = -1;
 	data->init_time = get_time();
+	if (data->number_of_meals > 0)
+		pthread_create(&monitor_thread, NULL, &monitor, &data->philos[0]);
 	while (++i < data->number_of_philos)
-		pthread_create(&data->philos[i].thread, NULL, routine,
-			&data->philos[i]);
+	{
+		pthread_create(&data->philos[i].thread, NULL, routine, &data->philos[i]); // Add fails protection
+		usleep(1 / 10);
+	}
 	i = -1;
 	while (++i < data->number_of_philos)
-		pthread_join(data->philos[i].thread, NULL);
+		pthread_join(data->philos[i].thread, NULL); // Add fails protection
 }
 
 int	main(int ac, char **av)
@@ -118,6 +125,7 @@ int	main(int ac, char **av)
 		return (1);
 	if (init(av, &data))
 		return (1);
-	start_dinner(&data);
+	start_simulation(&data);
+	end_simulation(&data);
 	return (0);
 }
