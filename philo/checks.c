@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checks.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmessett <pmessett@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 17:23:02 by pedro             #+#    #+#             */
-/*   Updated: 2023/08/15 10:25:29 by pmessett         ###   ########.fr       */
+/*   Updated: 2023/08/15 16:29:42 by pedro            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@ int	check_ac(int ac)
 {
 	if (ac < 5 || ac > 6)
 	{
-		printf("Error: Wrong amount of arguments\nArguments:\n\t./philo\n\tnumber_of_philosophers\n\ttime_to_die\n\ttime_to_eat\n\ttime_to_sleep\n\t[number_of_times_each_philosopher_must_eat]\n");
+		printf("Error: Wrong amount of arguments\n");
+		printf("Arguments:\n\t./philo\n\tnumber_of_philosophers\n\t");
+		printf("time_to_die\n\ttime_to_eat\n\ttime_to_sleep\n\t");
+		printf("[number_of_times_each_philosopher_must_eat]\n");
 		return (1);
 	}
 	return (0);
@@ -71,4 +74,34 @@ int	is_dead(t_philo *philo)
 	}
 	pthread_mutex_unlock(&philo->data->lock);
 	return (0);
+}
+
+int	none_meals_case(t_philo *philo)
+{
+	if (philo->data->number_of_meals == 0 || philo->data->number_of_philos == 1)
+	{
+		pthread_mutex_lock(&philo->data->write);
+		printf("%dms philo %d is thinking\n", get_time()
+			- philo->data->init_time, philo->id);
+		pthread_mutex_unlock(&philo->data->write);
+		usleep(philo->data->time_to_die * 1000);
+		is_dead(philo);
+		return (1);
+	}
+	return (0);
+}
+
+int	are_forks_available(t_philo *philo)
+{
+	if (philo->id % 2 == 0)
+	{
+		if (!case_impar(philo))
+			return (0);
+	}
+	else
+	{
+		if (!case_par(philo))
+			return (0);
+	}
+	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmessett <pmessett@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 17:49:29 by pedro             #+#    #+#             */
-/*   Updated: 2023/08/15 10:19:01 by pmessett         ###   ########.fr       */
+/*   Updated: 2023/08/15 16:31:53 by pedro            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,9 @@
 # include <sys/time.h>
 # include <unistd.h>
 
-/* --- MACRO Variables --- */
-
 /* --- Main Structure --- */
 
-struct s_data;
+struct	s_data;
 
 typedef struct s_semaphore
 {
@@ -68,17 +66,20 @@ typedef struct s_data
 int					check_ac(int ac);
 int					check_av(char **av);
 int					is_dead(t_philo *philo);
+int					none_meals_case(t_philo *philo);
+int					are_forks_available(t_philo *philo);
 
 /* --- Utils Functions --- */
 
-int					ft_isnum(char c);
 int					ft_atoi(char *str);
 int					get_time(void);
+void				message(t_philo *philo);
+int					case_impar(t_philo *philo);
+int					case_par(t_philo *philo);
 
 /* --- Semaphore Functions --- */
 
 int					ft_sem_init(t_semaphore *sem);
-int					ft_sem_wait(t_philo *philo);
 int					ft_sem_post(t_philo *philo);
 int					ft_sem_destroy(t_semaphore *sem);
 
@@ -90,7 +91,8 @@ void				set_forks_and_philos(t_data *data);
 /* --- Philo Functions --- */
 
 int					start_eating(t_philo *philo);
-void				start_sleeping(t_philo *philo);
+int					start_sleeping(t_philo *philo);
+void				grab_forks(t_philo *philo);
 
 /* --- Simulation Functions --- */
 
