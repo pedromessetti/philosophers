@@ -24,6 +24,9 @@ void	end_simulation(t_data *data)
 	}
 	pthread_mutex_destroy(&data->lock);
 	pthread_mutex_destroy(&data->write);
+	free(data->thread_id);
+	free(data->forks);
+	free(data->philos);
 }
 
 int	get_time(void)
@@ -40,26 +43,29 @@ int	ft_isnum(char c)
 	return (0);
 }
 
-int	ft_atoi(char *str)
+int     ft_atoi(char *str)
 {
-	int result;
-	int i;
+	int     i;
+	int     sign;
+	int     result;
 
-	result = 0;
 	i = 0;
-	while (str[i] == ' ' || (str[i] >= '\t' && str[i] <= '\r'))
-		i++;
+	sign = 1;
+	result = 0;
+	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
+			i++;
 	if (str[i] == '+')
-		i++;
-	else if (str[i] && !ft_isnum(str[i]))
-		return (-1);
+			i++;
+	else if (str[i] == '-')
+	{
+			sign = -1;
+			i++;
+	}
 	while (ft_isnum(str[i]))
 	{
-		result *= 10;
-		result += str[i] - 48;
-		i++;
-		if (str[i] && !ft_isnum(str[i]))
-			return (-1);
+			result *= 10;
+			result += str[i] - 48;
+			i++;
 	}
-	return (result);
+	return (result * sign);
 }

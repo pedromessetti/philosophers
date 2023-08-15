@@ -58,34 +58,40 @@ static int are_forks_available(t_philo *philo)
 
 int	ft_sem_post(t_philo *philo)
 {
+	if(philo->data->number_of_meals == 0)
+		return 0;
 	while (!are_forks_available(philo))
 	{
 		if (is_dead(philo))
 			return (1);
 	}
-	//pthread_mutex_lock(&philo->r_fork->mutex);
 	philo->r_fork->available = 0;
-	pthread_mutex_lock(&philo->data->write);
-	printf("%dms philo %d has taken his right fork\n", get_time()
-		- philo->data->init_time, philo->id);
-	pthread_mutex_unlock(&philo->data->write);
+	if (!is_dead(philo))
+	{
+		pthread_mutex_lock(&philo->data->write);
+		printf("%dms philo %d has taken his right fork\n", get_time()
+			- philo->data->init_time, philo->id);
+		pthread_mutex_unlock(&philo->data->write);
+	}
 	pthread_mutex_unlock(&philo->r_fork->mutex);
-	//pthread_mutex_lock(&philo->l_fork->mutex);
 	philo->l_fork->available = 0;
-	pthread_mutex_lock(&philo->data->write);
-	printf("%dms philo %d has taken his left fork\n", get_time()
-		- philo->data->init_time, philo->id);
-	pthread_mutex_unlock(&philo->data->write);
+	if (!is_dead(philo))
+	{
+		pthread_mutex_lock(&philo->data->write);
+		printf("%dms philo %d has taken his left fork\n", get_time()
+			- philo->data->init_time, philo->id);
+		pthread_mutex_unlock(&philo->data->write);
+	}
 	pthread_mutex_lock(&philo->state);
 	pthread_mutex_unlock(&philo->l_fork->mutex);
 	philo->time_to_die = get_time() + philo->data->time_to_die;
 	pthread_mutex_unlock(&philo->state);
 	if (is_dead(philo))
 		return 1;
-	int dead = start_eating(philo);
+	start_eating(philo);
 	pthread_mutex_lock(&philo->l_fork->mutex);
 	philo->l_fork->available = 1;
-	if (!dead){
+	if (!is_dead(philo)){
 		pthread_mutex_lock(&philo->data->write);
 		printf("%dms philo %d has dropped his left fork\n", get_time()
 			- philo->data->init_time, philo->id);
@@ -94,23 +100,24 @@ int	ft_sem_post(t_philo *philo)
 	pthread_mutex_unlock(&philo->l_fork->mutex);
 	pthread_mutex_lock(&philo->r_fork->mutex);
 	philo->r_fork->available = 1;
-	if (!dead){
+	if (!is_dead(philo)){
 		pthread_mutex_lock(&philo->data->write);
 		printf("%dms philo %d has dropped his right fork\n", get_time()
 			- philo->data->init_time, philo->id);
-		pthread_mutex_unlock(&philo->data->write);}
+		pthread_mutex_unlock(&philo->data->write);
+	}
 	pthread_mutex_unlock(&philo->r_fork->mutex);
 	if (is_dead(philo))
 		return 1;
 	start_sleeping(philo);
 	if (is_dead(philo))
 		return 1;
+	usleep(10);
 	return (0);
 }
 
 int	ft_sem_destroy(t_semaphore *sem)
 {
 	pthread_mutex_destroy(&sem->mutex);
-	// free(sem);
 	return (0);
 }

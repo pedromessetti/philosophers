@@ -43,7 +43,7 @@ int	check_av(char **av)
 		|| number_of_times_each_philosopher_must_eat < 0)
 	{
 		printf("Error: Invalid arguments\n");
-		return (-1);
+		return (0);
 	}
 	return (1);
 }

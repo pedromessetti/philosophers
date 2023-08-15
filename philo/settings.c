@@ -19,6 +19,7 @@ void	set_forks_and_philos(t_data *data)
 	i = -1;
 	while (++i < data->number_of_philos)
 	{
+		pthread_mutex_init(&data->philos[i].state, NULL);
 		ft_sem_init(&data->forks[i]);
 		data->philos[i].data = data;
 		data->philos[i].id = i + 1;
