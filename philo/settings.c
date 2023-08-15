@@ -52,5 +52,7 @@ int	init(char **av, t_data *data)
 	if (!data->philos || !data->forks || !data->thread_id)
 		return (1);
 	set_forks_and_philos(data);
+	pthread_mutex_init(&data->lock, NULL);
+	pthread_mutex_init(&data->write, NULL);
 	return (0);
 }

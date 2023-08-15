@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checks.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pmessett <pmessett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 17:23:02 by pedro             #+#    #+#             */
-/*   Updated: 2023/08/15 09:09:59 by pedro            ###   ########.fr       */
+/*   Updated: 2023/08/15 10:25:29 by pmessett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,25 @@ int	check_av(char **av)
 
 int	is_dead(t_philo *philo)
 {
-	if (get_time() >= philo->time_to_die && philo->eating == 0)
+	pthread_mutex_lock(&philo->data->lock);
+	if (get_time() >= philo->time_to_die)
 	{
-		printf("%dms philo %d died\n", get_time() - philo->data->init_time,
-			philo->id);
-		pthread_mutex_lock(&philo->state);
 		if (philo->data->dead == 0)
+		{
 			philo->data->dead = 1;
-		pthread_mutex_unlock(&philo->state);
+			pthread_mutex_lock(&philo->data->write);
+			printf("%dms philo %d died\n", get_time() - philo->data->init_time,
+				philo->id);
+			pthread_mutex_unlock(&philo->data->write);
+		}
+		pthread_mutex_unlock(&philo->data->lock);
 		return (1);
 	}
+	if (philo->data->dead == 1)
+	{
+		pthread_mutex_unlock(&philo->data->lock);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->data->lock);
 	return (0);
 }

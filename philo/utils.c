@@ -23,6 +23,7 @@ void	end_simulation(t_data *data)
 		pthread_mutex_destroy(&data->philos[i].state);
 	}
 	pthread_mutex_destroy(&data->lock);
+	pthread_mutex_destroy(&data->write);
 }
 
 int	get_time(void)

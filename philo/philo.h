@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pmessett <pmessett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 17:49:29 by pedro             #+#    #+#             */
-/*   Updated: 2023/08/15 09:09:38 by pedro            ###   ########.fr       */
+/*   Updated: 2023/08/15 10:19:01 by pmessett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ typedef struct s_data
 	int				number_of_meals;
 	t_semaphore		*forks;
 	pthread_mutex_t	lock;
+	pthread_mutex_t	write;
 }					t_data;
 
 /* --- Checker Functions --- */
@@ -88,7 +89,7 @@ void				set_forks_and_philos(t_data *data);
 
 /* --- Philo Functions --- */
 
-void				start_eating(t_philo *philo);
+int					start_eating(t_philo *philo);
 void				start_sleeping(t_philo *philo);
 
 /* --- Simulation Functions --- */
