@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pmessett <pmessett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 16:03:57 by pedro             #+#    #+#             */
-/*   Updated: 2023/08/15 16:19:51 by pedro            ###   ########.fr       */
+/*   Updated: 2023/08/15 17:12:44 by pmessett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,5 @@ void	grab_forks(t_philo *philo)
 			- philo->data->init_time, philo->id);
 		pthread_mutex_unlock(&philo->data->write);
 	}
+	pthread_mutex_unlock(&philo->l_fork->mutex);
 }

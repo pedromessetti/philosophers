@@ -14,7 +14,8 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -pthread -g #-fsanitize=thread
 
 # Source and object files
-SRCS =	$(wildcard ./*.c)
+SRCS =	actions.c checks.c main.c sem.c settings.c utils.c
+
 OBJS = $(SRCS:.c=.o)
 
 # Default target

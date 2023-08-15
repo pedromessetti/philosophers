@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sem.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pmessett <pmessett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 14:35:05 by pedro             #+#    #+#             */
-/*   Updated: 2023/08/15 16:20:04 by pedro            ###   ########.fr       */
+/*   Updated: 2023/08/15 17:12:40 by pmessett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ int	ft_sem_init(t_semaphore *sem)
 
 int	ft_sem_post(t_philo *philo)
 {
-	if (philo->data->number_of_meals == 0)
-		return (0);
 	while (!are_forks_available(philo))
 	{
 		if (is_dead(philo))
@@ -30,7 +28,6 @@ int	ft_sem_post(t_philo *philo)
 	}
 	grab_forks(philo);
 	pthread_mutex_lock(&philo->state);
-	pthread_mutex_unlock(&philo->l_fork->mutex);
 	philo->time_to_die = get_time() + philo->data->time_to_die;
 	pthread_mutex_unlock(&philo->state);
 	if (is_dead(philo))

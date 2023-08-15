@@ -3,36 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pmessett <pmessett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 17:49:24 by pedro             #+#    #+#             */
-/*   Updated: 2023/08/15 16:32:32 by pedro            ###   ########.fr       */
+/*   Updated: 2023/08/15 17:19:39 by pmessett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	*monitor(t_data *data)
-{
-	while (1)
-	{
-		pthread_mutex_lock(&data->lock);
-		if (data->dead)
-		{
-			pthread_mutex_unlock(&data->lock);
-			break ;
-		}
-		if (data->finished >= data->number_of_philos)
-		{
-			data->dead = 1;
-			pthread_mutex_unlock(&data->lock);
-			break ;
-		}
-		pthread_mutex_unlock(&data->lock);
-		usleep(1000);
-	}
-	return ((void *)0);
-}
 
 void	*routine(void *thread_pointer)
 {
@@ -82,20 +60,15 @@ void	end_simulation(t_data *data)
 void	start_simulation(t_data *data)
 {
 	int			i;
-	pthread_t	monitor_thread;
 
 	i = -1;
 	data->init_time = get_time();
-	if (data->number_of_meals >= 0)
-		pthread_create(&monitor_thread, NULL, (void *(*)(void *))monitor, data);
 	while (++i < data->number_of_philos)
 		pthread_create(&data->philos[i].thread, NULL, routine,
 			&data->philos[i]);
 	i = -1;
 	while (++i < data->number_of_philos)
 		pthread_join(data->philos[i].thread, NULL);
-	if (data->number_of_meals >= 0)
-		pthread_join(monitor_thread, NULL);
 }
 
 int	main(int ac, char **av)
@@ -107,7 +80,12 @@ int	main(int ac, char **av)
 	if (!check_av(av))
 		return (1);
 	if (init(av, &data))
+	{
+		free(data.thread_id);
+		free(data.forks);
+		free(data.philos);
 		return (1);
+	}
 	start_simulation(&data);
 	end_simulation(&data);
 	return (0);

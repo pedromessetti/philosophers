@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pmessett <pmessett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 17:49:29 by pedro             #+#    #+#             */
-/*   Updated: 2023/08/15 16:31:53 by pedro            ###   ########.fr       */
+/*   Updated: 2023/08/15 19:23:28 by pmessett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int					ft_sem_destroy(t_semaphore *sem);
 int					init(char **av, t_data *data);
 void				set_forks_and_philos(t_data *data);
 
-/* --- Philo Functions --- */
+/* --- Actions Functions --- */
 
 int					start_eating(t_philo *philo);
 int					start_sleeping(t_philo *philo);
