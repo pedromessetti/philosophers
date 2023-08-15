@@ -6,7 +6,7 @@
 /*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 17:49:29 by pedro             #+#    #+#             */
-/*   Updated: 2023/08/09 05:59:32 by pedro            ###   ########.fr       */
+/*   Updated: 2023/08/15 09:09:38 by pedro            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct s_data
 
 int					check_ac(int ac);
 int					check_av(char **av);
+int					is_dead(t_philo *philo);
 
 /* --- Utils Functions --- */
 

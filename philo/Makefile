@@ -1,4 +1,4 @@
-#.SILENT:
+.SILENT:
 
 # Color variables
 RED = \033[1;31m
@@ -41,7 +41,7 @@ run: re
 #	./$(NAME) 5 800 200 200
 #	./$(NAME) 5 800 200 200 7 | grep eating | wc -l # out -> 35
 #	./$(NAME) 4 410 200 200 # no one dies
-#	./$(NAME) 5 410 200 200 # one dies
+	./$(NAME) 5 410 200 200 # one dies
 #	./$(NAME) 3 310 200 100 # one dies
 
 leak: re
@@ -55,6 +55,6 @@ help:
 	echo "Targets:"
 	echo "  all        Build executable"
 	echo "  clean      Remove object files"
-	echo "  fclean     Remove object files and the executable"
-	echo "  re         Rebuild the project"
-	echo "  run        Rebuild the project and remove object files"
+	echo "  fclean     Remove object files and executable"
+	echo "  re         Rebuild project"
+	echo "  run        Rebuild, remove object files and run the program"

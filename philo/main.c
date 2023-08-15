@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmessett <pmessett@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 17:49:24 by pedro             #+#    #+#             */
-/*   Updated: 2023/08/14 10:57:30 by pmessett         ###   ########.fr       */
+/*   Updated: 2023/08/15 09:36:05 by pedro            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,11 @@ void start_sleeping(t_philo *philo)
 	start_time = get_time();
 	sleeping_time = philo->data->time_to_sleep;
 	printf("%dms philo %d is sleeping\n", get_time() - philo->data->init_time, philo->id);
-	// check if it is dead inside the loop
-	while ((get_time() - start_time) < sleeping_time)
+	while ((get_time() - start_time) < sleeping_time) {
+		if (is_dead(philo))
+			return ;
 		usleep(sleeping_time / 10);
+	}
 }
 
 void	start_eating(t_philo *philo)
@@ -36,8 +38,11 @@ void	start_eating(t_philo *philo)
 	pthread_mutex_lock(&philo->state);
 	philo->eating = 1;
 	pthread_mutex_unlock(&philo->state);
-	while ((get_time() - start_time) < eating_time)
+	while ((get_time() - start_time) < eating_time) {
+		if (is_dead(philo))
+			return ;
 		usleep(eating_time / 10);
+	}
 	pthread_mutex_lock(&philo->state);
 	philo->meals_count++;
 	philo->eating = 0;
@@ -67,14 +72,9 @@ void	*supervisor(void *thread_pointer)
 	philo = (t_philo *)thread_pointer;
 	while (philo->data->dead == 0)
 	{
+		if (is_dead(philo))
+			return ((void *)0);
 		pthread_mutex_lock(&philo->state);
-		// --------------------------
-		if (get_time() >= philo->time_to_die && philo->eating == 0){
-			printf("%dms philo %d died\n", get_time() - philo->data->init_time, philo->id);
-			if (philo->data->dead == 0)
-				philo->data->dead = 1;
-		}
-		// --------------------------
 		if (philo->meals_count == philo->data->number_of_meals) {
 			pthread_mutex_lock(&philo->data->lock);
 			philo->data->finished++;
@@ -95,8 +95,14 @@ void	*routine(void *thread_pointer)
 	//	return ((void *)1);
 	while (philo->data->dead == 0)
 	{
-		ft_sem_post(philo);
-		// if has eaten all the times, break
+		if(is_dead(philo))
+			break;
+		if(ft_sem_post(philo))
+			break;
+		if (philo->meals_count == philo->data->number_of_meals)
+			break;
+		if (is_dead(philo))
+			break;
 		printf("%dms philo %d is thinking\n", get_time() - philo->data->init_time, philo->id);
 	}
 	//if (pthread_join(philo->thread, NULL))
@@ -111,19 +117,17 @@ void	start_simulation(t_data *data)
 
 	i = -1;
 	data->init_time = get_time();
-	/* 
-		monitor should check for the dead status & if all have eaten
-	 */
+	//monitor should check for the dead status & if all have eaten
 	if (data->number_of_meals > 0)
 		pthread_create(&monitor_thread, NULL, &monitor, &data->philos[0]);
 	while (++i < data->number_of_philos)
 	{
-		pthread_create(&data->philos[i].thread, NULL, routine, &data->philos[i]); // Add fails protection
+		pthread_create(&data->philos[i].thread, NULL, routine, &data->philos[i]);
 		usleep(1 / 10);
 	}
 	i = -1;
 	while (++i < data->number_of_philos)
-		pthread_join(data->philos[i].thread, NULL); // Add fails protection
+		pthread_join(data->philos[i].thread, NULL);
 }
 
 int	main(int ac, char **av)

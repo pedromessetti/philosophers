@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sem.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmessett <pmessett@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 14:35:05 by pedro             #+#    #+#             */
-/*   Updated: 2023/08/14 10:40:56 by pmessett         ###   ########.fr       */
+/*   Updated: 2023/08/15 09:35:29 by pedro            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,11 @@ int	ft_sem_post(t_philo *philo)
 	pthread_mutex_unlock(&philo->l_fork->mutex);
 	philo->time_to_die = get_time() + philo->data->time_to_die;
 	pthread_mutex_unlock(&philo->state);
+	if (is_dead(philo))
+		return 1;
 	start_eating(philo);
+	if (is_dead(philo))
+		return 1;
 	pthread_mutex_lock(&philo->l_fork->mutex);
 	philo->l_fork->available = 1;
 	printf("%dms philo %d has dropped his left fork\n", get_time()
@@ -65,7 +69,11 @@ int	ft_sem_post(t_philo *philo)
 	printf("%dms philo %d has dropped his right fork\n", get_time()
 		- philo->data->init_time, philo->id);
 	pthread_mutex_unlock(&philo->r_fork->mutex);
+	if (is_dead(philo))
+		return 1;
 	start_sleeping(philo);
+	if (is_dead(philo))
+		return 1;
 	return (0);
 }
 
