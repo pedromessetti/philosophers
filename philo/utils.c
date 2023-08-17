@@ -6,19 +6,11 @@
 /*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 19:00:10 by pedro             #+#    #+#             */
-/*   Updated: 2023/08/15 16:33:19 by pedro            ###   ########.fr       */
+/*   Updated: 2023/08/16 10:20:54 by pedro            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	message(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->data->write);
-	printf("%dms philo %d is thinking\n", get_time() - philo->data->init_time,
-		philo->id);
-	pthread_mutex_unlock(&philo->data->write);
-}
 
 int	get_time(void)
 {
@@ -53,40 +45,4 @@ int	ft_atoi(char *str)
 		i++;
 	}
 	return (result * sign);
-}
-
-int	case_impar(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->r_fork->mutex);
-	if (!philo->r_fork->available)
-	{
-		pthread_mutex_unlock(&philo->r_fork->mutex);
-		return (0);
-	}
-	pthread_mutex_lock(&philo->l_fork->mutex);
-	if (!philo->l_fork->available)
-	{
-		pthread_mutex_unlock(&philo->r_fork->mutex);
-		pthread_mutex_unlock(&philo->l_fork->mutex);
-		return (0);
-	}
-	return (1);
-}
-
-int	case_par(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->l_fork->mutex);
-	if (!philo->l_fork->available)
-	{
-		pthread_mutex_unlock(&philo->l_fork->mutex);
-		return (0);
-	}
-	pthread_mutex_lock(&philo->r_fork->mutex);
-	if (!philo->r_fork->available)
-	{
-		pthread_mutex_unlock(&philo->l_fork->mutex);
-		pthread_mutex_unlock(&philo->r_fork->mutex);
-		return (0);
-	}
-	return (1);
 }

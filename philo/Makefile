@@ -14,7 +14,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -pthread -g #-fsanitize=thread
 
 # Source and object files
-SRCS =	actions.c checks.c main.c sem.c settings.c utils.c
+SRCS =	actions.c checks.c main.c settings.c utils.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -39,27 +39,15 @@ re: fclean all
 # Rebuild the project and remove object files
 run: re
 	$(MAKE) clean
-	./$(NAME) 5 800 200 200
-#	./$(NAME) 5 800 200 200 7 | grep eating | wc -l # out -> 35
+#	./$(NAME) 5 800 200 200
+#	./$(NAME) 5 800 200 200 7 | grep eating | wc -l # out: 35
 #	./$(NAME) 4 410 200 200 # no one dies
-#	./$(NAME) 5 410 200 200 # one dies
+	./$(NAME) 5 410 200 200 # one dies
 #	./$(NAME) 3 310 200 100 # one dies
-
-test1: re
-	$(MAKE) clean
-	./$(NAME) 5 800 200 200 7 | grep eating | wc -l
-
-test0: re
-	$(MAKE) clean
-	./$(NAME) 2 400 200 200
-
-test2: re
-	$(MAKE) clean
-	./$(NAME) 5 410 200 200
 
 leak: re
 	$(MAKE) clean
-	valgrind 	./$(NAME) 5 800 200 200 5
+	valgrind ./$(NAME) 5 800 200 200 5
 
 # Show help message
 help:

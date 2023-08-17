@@ -7,18 +7,21 @@
 - [Learnings :brain:](#learnings-brain)
 
 ## Description :clipboard:
-The dinning philosophers problem
+The dinning philosophers problem. This project is about learning how threads work by precisely timing a group of N philosophers on when to pick up forks and eat spaghetti without dying from hunger. For more information about the project check the [subject here](https://github.com/pedromessetti/philosophers/blob/master/subject.pdf). The program was written following the rules described in the 42 Norme. To check the Norme [click here](https://github.com/42School/norminette/blob/master/pdf/en.norm.pdf)
 
 ## Operation :gear:
 
 ## Learnings :brain:
 
+- **Threads** - 
+
+- **mutex** - 
+
 - **POSIX threads** (pthreads) library - Set of C programming language threads (or lightweight processes) that provides a standardized interface for creating and manipulating threads, as well as synchronization and communication between threads. The library provides a number of functions for creating, managing, and synchronizing threads. It is a powerful and flexible way to write multithreaded programs that can take advantage of modern hardware with multiple cores and processors.
 
-- `pthread_t` object - data type used to represent a thread in the POSIX threads library. It's used to identify a thread and is created when a new thread is created using `pthread_create()` function. The `pthread_t` object is used as a parameter in other functions that operate on threads.
+- `pthread_t` - data type used to represent a thread in the POSIX threads library. It's used to identify a thread and is created when a new thread is created using `pthread_create()` function. The `pthread_t` object is used as a parameter in other functions that operate on threads.
 
-- `pthread_create()` function - Used to create a new thread from the current process. Takes 4 parameters:
-
+- `pthread_create()` - Function used to create a new thread from the current process. Takes 4 parameters:
   - A pointer to a `pthread_t` object that will hold the ID of the new thread.
   - A pointer to a `pthread_attr_t` object that specifies the attributes for the new thread being created. These attributes include things like the stack size, scheduling policy, and priority. If `NULL` is passed, the default attributes are used.
   - A pointer to the function that the new thread will execute.

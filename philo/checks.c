@@ -6,7 +6,7 @@
 /*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 17:23:02 by pedro             #+#    #+#             */
-/*   Updated: 2023/08/15 16:29:42 by pedro            ###   ########.fr       */
+/*   Updated: 2023/08/16 10:15:11 by pedro            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	is_dead(t_philo *philo)
 	return (0);
 }
 
-int	none_meals_case(t_philo *philo)
+int	special_case(t_philo *philo)
 {
 	if (philo->data->number_of_meals == 0 || philo->data->number_of_philos == 1)
 	{
@@ -95,13 +95,35 @@ int	are_forks_available(t_philo *philo)
 {
 	if (philo->id % 2 == 0)
 	{
-		if (!case_impar(philo))
+		pthread_mutex_lock(&philo->r_fork->mutex);
+		if (!philo->r_fork->available)
+		{
+			pthread_mutex_unlock(&philo->r_fork->mutex);
 			return (0);
+		}
+		pthread_mutex_lock(&philo->l_fork->mutex);
+		if (!philo->l_fork->available)
+		{
+			pthread_mutex_unlock(&philo->r_fork->mutex);
+			pthread_mutex_unlock(&philo->l_fork->mutex);
+			return (0);
+		}
 	}
 	else
 	{
-		if (!case_par(philo))
+		pthread_mutex_lock(&philo->l_fork->mutex);
+		if (!philo->l_fork->available)
+		{
+			pthread_mutex_unlock(&philo->l_fork->mutex);
 			return (0);
+		}
+		pthread_mutex_lock(&philo->r_fork->mutex);
+		if (!philo->r_fork->available)
+		{
+			pthread_mutex_unlock(&philo->l_fork->mutex);
+			pthread_mutex_unlock(&philo->r_fork->mutex);
+			return (0);
+		}
 	}
 	return (1);
 }

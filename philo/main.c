@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmessett <pmessett@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 17:49:24 by pedro             #+#    #+#             */
-/*   Updated: 2023/08/15 17:19:39 by pmessett         ###   ########.fr       */
+/*   Updated: 2023/08/16 10:22:24 by pedro            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ void	*routine(void *thread_pointer)
 
 	philo = (t_philo *)thread_pointer;
 	philo->time_to_die = philo->data->time_to_die + get_time();
-	if (none_meals_case(philo))
+	if (special_case(philo))
 		return ((void *)0);
 	while (1)
 	{
 		if (is_dead(philo))
 			break ;
-		if (ft_sem_post(philo))
+		if (exec_routine(philo))
 			break ;
 		if (philo->meals_count == philo->data->number_of_meals)
 		{
@@ -35,7 +35,9 @@ void	*routine(void *thread_pointer)
 		}
 		if (is_dead(philo))
 			break ;
-		message(philo);
+		pthread_mutex_lock(&philo->data->write);
+		printf("%dms philo %d is thinking\n", get_time() - philo->data->init_time, philo->id);
+		pthread_mutex_unlock(&philo->data->write);
 	}
 	return ((void *)0);
 }
@@ -47,7 +49,7 @@ void	end_simulation(t_data *data)
 	i = -1;
 	while (++i < data->number_of_philos)
 	{
-		ft_sem_destroy(&data->forks[i]);
+		pthread_mutex_destroy(&data->forks[i].mutex);
 		pthread_mutex_destroy(&data->philos[i].state);
 	}
 	pthread_mutex_destroy(&data->lock);
@@ -79,13 +81,8 @@ int	main(int ac, char **av)
 		return (1);
 	if (!check_av(av))
 		return (1);
-	if (init(av, &data))
-	{
-		free(data.thread_id);
-		free(data.forks);
-		free(data.philos);
+	if (initialize(av, &data))
 		return (1);
-	}
 	start_simulation(&data);
 	end_simulation(&data);
 	return (0);

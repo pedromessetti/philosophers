@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   settings.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmessett <pmessett@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 20:45:37 by pedro             #+#    #+#             */
-/*   Updated: 2023/08/15 17:04:01 by pmessett         ###   ########.fr       */
+/*   Updated: 2023/08/16 18:26:06 by pedro            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,12 @@ void	set_forks_and_philos(t_data *data)
 	while (++i < data->number_of_philos)
 	{
 		pthread_mutex_init(&data->philos[i].state, NULL);
-		ft_sem_init(&data->forks[i]);
+		data->forks[i].available = 1;
+		pthread_mutex_init(&data->forks[i].mutex, NULL);
 		data->philos[i].data = data;
 		data->philos[i].id = i + 1;
 		data->philos[i].time_to_die = data->time_to_die;
 		data->philos[i].meals_count = 0;
-		data->philos[i].eating = 0;
-		data->philos[i].status = 0;
 		data->philos[i].l_fork = &data->forks[i];
 		if (i == 0)
 			data->philos[i].r_fork = &data->forks[data->number_of_philos - 1];
@@ -35,7 +34,7 @@ void	set_forks_and_philos(t_data *data)
 	}
 }
 
-int	init(char **av, t_data *data)
+int	initialize(char **av, t_data *data)
 {
 	data->number_of_philos = ft_atoi(av[1]);
 	data->time_to_die = ft_atoi(av[2]);
