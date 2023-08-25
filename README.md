@@ -4,7 +4,9 @@
 - [Index](#index)
 - [Description :clipboard:](#description-clipboard)
 - [Operation :gear:](#operation-gear)
+- [Usage](#usage)
 - [Learnings :brain:](#learnings-brain)
+- [Author](#author)
 
 ## Description :clipboard:
 The project is designed to simulate a dining scenario where N philosophers sit around a table and alternate between eating, thinking, and sleeping. The challenge lies in coordinating their actions while avoiding deadlocks and ensuring that no philosopher starves. For more information about the project check the [subject here](https://github.com/pedromessetti/philosophers/blob/master/subject.pdf). The program was written following the rules described in the 42 Norme. To check the Norme [click here](https://github.com/42School/norminette/blob/master/pdf/en.norm.pdf)
