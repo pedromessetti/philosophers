@@ -29,22 +29,21 @@ Run the executable with the required arguments:
 ## Operation :gear:
 Each philosopher is represented as a thread, and they interact with forks using mutexes to ensure safe concurrent access. The program simulates philosophers engaging in 3 activities:
 
-- **Eating**: Philosophers grab the forks on their left and right side, start eating and after finished, release the forks.
+- **Eating**: Philosophers grab their right and left forks, start eating and after finished, release the forks.
 
-- **Sleeping**: After eating, philosophers enter a sleep state for a specified duration.
+- **Sleeping**: After eating, philosophers enter in a sleep state for the specified duration.
 
 - **Thinking**: Philosophers think until it's time to eat again.
 
-The challenge lies in managing the access to forks and ensuring that no two philosophers try to eat using the same fork simultaneously. Mutexes are used to synchronize access to shared resources and prevent race conditions. Here is the logic behind the program:
+The challenge lies in managing the access to forks, ensuring that no one eats using forks that are been used by another philosopher. Mutexes are used to synchronize access to shared resources and prevent this behavior. Here is the logic behind:
 
-First, initializes the data structures and resources needed for the simulation, philosophers threads are created, each representing a philosopher and mutexes are set up to ensure synchronized access to shared resources like forks and output.
+First, the program initializes the data structures and resources needed for the simulation, philosophers threads are created, each representing a philosopher, and mutexes are set up to ensure synchronized access to shared resources like forks and output.
 
 Then the simulation begins, each philosopher (thread) starts executing the routine function, which simulates their actions. When a philosopher eats, they acquire the forks (mutexes) on their left and right side, always checking if they have exclusive access to them. After eating and before sleeping, the philosopher release the forks allowing other philosophers that depends on that forks to start eating.
 
 Mutexes prevent multiple philosophers from simultaneously grabbing the same fork, avoiding potential deadlock scenarios. Philosophers are given a limited time to eat, preventing starvation by ensuring they eat within a certain time frame.
 
-The program generates output messages using printf to display philosophers' states (eating, sleeping, thinking).
-Messages are formatted with timestamps and philosopher id.
+The program generates output messages using printf to display philosophers' states (eating, sleeping, thinking) and they are formatted with timestamps in ms and the philosopher id.
 
 The simulation continues until one of the following conditions is met:
  - All philosophers have completed the specified number of meals (number_of_times_each_philosopher_must_eat).
@@ -53,7 +52,6 @@ The simulation continues until one of the following conditions is met:
 When the simulation ends, philosopher threads are joined, and resources are cleaned up.
 
 ## Learnings :brain:
-Through this project, I've gained valuable insights into threads, synchronization, and concurrent programming. Some key takeaways include:
 
 - **Threads** - Smallest units of execution within a program, representing independent paths of execution that share the same memory space and resources of their parent process. Threads enable concurrent execution, allowing multiple tasks to be carried out simultaneously within a single program. This concurrency enhances program performance and responsiveness, making threads an essential tool for multitasking and parallelism in programming.
 
