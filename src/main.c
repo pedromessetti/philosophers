@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pmessett <pmessett>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 17:49:24 by pedro             #+#    #+#             */
-/*   Updated: 2023/08/16 10:22:24 by pedro            ###   ########.fr       */
+/*   Updated: 2024/03/02 20:36:16 by pmessett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../lib/philo.h"
 
 void	*routine(void *thread_pointer)
 {
@@ -65,7 +65,7 @@ void	start_simulation(t_data *data)
 
 	i = -1;
 	data->init_time = get_time();
-	while (++i < data->number_of_philos)
+	while (i < data->number_of_philos)
 		pthread_create(&data->philos[i].thread, NULL, routine,
 			&data->philos[i]);
 	i = -1;

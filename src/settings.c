@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   settings.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pmessett <pmessett>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 20:45:37 by pedro             #+#    #+#             */
-/*   Updated: 2023/08/16 18:26:06 by pedro            ###   ########.fr       */
+/*   Updated: 2024/03/02 20:36:16 by pmessett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../lib/philo.h"
 
 void	set_forks_and_philos(t_data *data)
 {

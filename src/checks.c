@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   checks.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pmessett <pmessett>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 17:23:02 by pedro             #+#    #+#             */
-/*   Updated: 2023/08/16 10:15:11 by pedro            ###   ########.fr       */
+/*   Updated: 2024/03/02 20:36:16 by pmessett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../lib/philo.h"
 
 int	check_ac(int ac)
 {

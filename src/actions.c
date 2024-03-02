@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pmessett <pmessett>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 16:03:57 by pedro             #+#    #+#             */
-/*   Updated: 2023/08/16 18:44:08 by pedro            ###   ########.fr       */
+/*   Updated: 2024/03/02 20:35:51 by pmessett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../lib/philo.h"
 
 int	start_sleeping(t_philo *philo)
 {
